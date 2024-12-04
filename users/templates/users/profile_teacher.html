@@ -1,0 +1,12 @@
+<h1>Личный кабинет преподавателя</h1>
+<form action="{% url 'index' %}" method="get">
+    <button type="submit">На главную</button>
+</form>
+<h2>Мои курсы:</h2>
+<ul>
+    {% for course in courses %}
+    <li>
+        <a href="{% url 'course_detail' course.id %}">{{ course.title }}</a>
+    </li>
+    {% endfor %}
+</ul>

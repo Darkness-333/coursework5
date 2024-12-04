@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход или Регистрация</title>
+</head>
+<body>
+    <h1>Вход или Регистрация</h1>
+
+    <!-- Кнопки для переключения форм -->
+    {% if form_type == 'login' %}
+        <form method="post" action="{% url 'auth' %}">
+            {% csrf_token %}
+            <button type="submit" name="show_register">Зарегистрироваться</button>
+        </form>
+
+        <h2>Вход</h2>
+        <form method="post" action="{% url 'auth' %}">
+            {% csrf_token %}
+            {{ login_form.as_p }}
+            <button type="submit" name="login">Войти</button>
+        </form>
+    {% elif form_type == 'register' %}
+        <form method="post" action="{% url 'auth' %}">
+            {% csrf_token %}
+            <button type="submit" name="show_login">Войти</button>
+        </form>
+
+        <h2>Регистрация</h2>
+        <form method="post" action="{% url 'auth' %}">
+            {% csrf_token %}
+            {{ register_form.as_p }}
+            <button type="submit" name="register">Зарегистрироваться</button>
+        </form>
+    {% endif %}
+    <br>
+    <form action="{% url 'index' %}" method="get">
+        <button type="submit">На главную</button>
+    </form>
+    <br>
+
+</body>
+</html>

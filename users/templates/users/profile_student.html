@@ -1,0 +1,17 @@
+<h1>Личный кабинет студента</h1>
+<form action="{% url 'index' %}" method="get">
+    <button type="submit">На главную</button>
+</form>
+<h2>Мои курсы:</h2>
+<ul>
+    {% for course in courses %}
+        {% if course.course_id %}
+            <li>
+                <a href="{% url 'course_detail' course.course_id %}">{{ course.course.title }}</a> -
+                Прогресс: {{ course.completed_lessons }} / {{ course.total_lessons }} завершено
+            </li>
+        {% else %}
+            <li>Ошибка: курс без ID</li>
+        {% endif %}
+    {% endfor %}
+</ul>

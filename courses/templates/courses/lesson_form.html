@@ -1,0 +1,76 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Создание урока</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>{% if object %}Редактировать урок{% else %}Добавить новый урок{% endif %}</h1>-->
+
+<!--    &lt;!&ndash; Форма для создания/редактирования урока &ndash;&gt;-->
+<!--    <form method="post">-->
+<!--        {% csrf_token %}-->
+<!--        {{ form.as_p }}-->
+
+<!--        <button type="submit">{% if object %}Сохранить изменения{% else %}Создать урок{% endif %}</button>-->
+<!--    </form>-->
+<!--    <br>-->
+<!--    &lt;!&ndash; Кнопка для отмены и возврата к списку уроков &ndash;&gt;-->
+<!--    <form action="{% url 'lesson_list' course_id=course_id %}" method="get">-->
+<!--        <button type="submit">Отменить</button>-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="ru">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>{% if object %}Редактировать урок{% else %}Создать новый урок{% endif %}</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    <h1>{% if object %}Редактировать урок{% else %}Добавить новый урок{% endif %}</h1>-->
+
+<!--    &lt;!&ndash; Форма для создания/редактирования урока &ndash;&gt;-->
+<!--    <form method="post">-->
+<!--        {% csrf_token %}-->
+<!--        {{ form.as_p }}-->
+
+<!--        <button type="submit">{% if object %}Сохранить изменения{% else %}Создать урок{% endif %}</button>-->
+<!--    </form>-->
+<!--    <br>-->
+
+<!--    &lt;!&ndash; Кнопка для отмены и возврата на страницу деталей курса &ndash;&gt;-->
+<!--    <form action="{% url 'course_detail' pk=course_id %}" method="get">-->
+<!--        <button type="submit">Отменить</button>-->
+<!--    </form>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if object %}Редактировать урок{% else %}Создать новый урок{% endif %}</title>
+</head>
+<body>
+    <h1>{% if object %}Редактировать урок{% else %}Добавить новый урок{% endif %}</h1>
+
+    <!-- Форма для создания/редактирования урока -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">{% if object %}Сохранить изменения{% else %}Создать урок{% endif %}</button>
+    </form>
+    <br>
+
+    <!-- Кнопка для отмены и возврата на страницу деталей курса -->
+    <form action="{% url 'course_detail' pk=course_id %}" method="get">
+        <button type="submit">Отменить</button>
+    </form>
+</body>
+</html>

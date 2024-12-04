@@ -1,0 +1,37 @@
+<!--<h1>{{ lesson.title }}</h1>-->
+<!--<p>{{ lesson.content }}</p>-->
+
+<!--{% if user.role == 'student' %}-->
+<!--    <form method="post" action="{% url 'lesson_complete' course_id=course_id pk=lesson.id %}">-->
+<!--        {% csrf_token %}-->
+<!--        <button type="submit">Завершить урок</button>-->
+<!--    </form>-->
+<!--{% endif %}-->
+
+<!--<form action="{% url 'course_detail' pk=course_id %}" method="get">-->
+<!--    <button type="submit">Вернуться к курсу</button>-->
+<!--</form>-->
+
+<h1>{{ lesson.title }}</h1>
+<p>{{ lesson.content|linebreaks }}</p>
+
+{% if user.role == 'student' %}
+    {% if lesson in completed_lessons %}
+        <!-- Урок выполнен -->
+        <p style="color: green;">Вы завершили этот урок.</p>
+        <form method="post" action="{% url 'lesson_uncomplete' course_id=course_id pk=lesson.id %}">
+            {% csrf_token %}
+            <button type="submit">Отменить завершение урока</button>
+        </form>
+    {% else %}
+        <!-- Урок не выполнен -->
+        <form method="post" action="{% url 'lesson_complete' course_id=course_id pk=lesson.id %}">
+            {% csrf_token %}
+            <button type="submit">Завершить урок</button>
+        </form>
+    {% endif %}
+{% endif %}
+
+<form action="{% url 'course_detail' pk=course_id %}" method="get">
+    <button type="submit">Вернуться к курсу</button>
+</form>

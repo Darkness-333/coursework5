@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница</title>
+    <style>
+        button {
+            margin-bottom: 10px; /* Добавляем отступ снизу между кнопками */
+        }
+    </style>
+</head>
+<body>
+    <h1>
+        {% if user.is_authenticated %}
+            Добро пожаловать, {{ user.username }}!
+        {% else %}
+            Добро пожаловать на наш сайт!
+        {% endif %}
+    </h1>
+    <nav>
+        <ul>
+            {% if user.is_authenticated %}
+                <!-- Переход в личный кабинет -->
+                <form action="{% url 'profile' %}" method="get">
+                    <button type="submit">Мой аккаунт</button>
+                </form>
+                <!-- Переход к списку курсов -->
+                <form action="{% url 'course_list' %}" method="get">
+                    <button type="submit">Курсы</button>
+                </form>
+                <!-- Выход из системы -->
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
+            {% else %}
+                <!-- Переход на страницу авторизации -->
+                <form action="{% url 'auth' %}" method="get">
+                    <button type="submit">Войти</button>
+                </form>
+            {% endif %}
+        </ul>
+    </nav>
+</body>
+</html>

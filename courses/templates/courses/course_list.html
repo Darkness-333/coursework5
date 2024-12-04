@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список курсов</title>
+</head>
+<body>
+    <h1>Список курсов</h1>
+
+    <!-- Форма поиска и фильтрации -->
+    <form method="get">
+        <!-- Поиск -->
+        <input type="text" name="search" placeholder="Поиск курса" value="{{ request.GET.search }}">
+
+        <!-- Выпадающий список фильтрации -->
+        <select name="filter">
+            <option value="all" {% if current_filter == 'all' %}selected{% endif %}>Все курсы</option>
+            <option value="teacher" {% if current_filter == 'teacher' %}selected{% endif %}>Мои курсы (как преподаватель)</option>
+            <option value="student" {% if current_filter == 'student' %}selected{% endif %}>Курсы, на которые я записан</option>
+            <option value="unrelated" {% if current_filter == 'unrelated' %}selected{% endif %}>Курсы, к которым я не отношусь</option>
+        </select>
+
+        <!-- Кнопка для применения фильтров -->
+        <button type="submit">Применить</button>
+    </form>
+    <br>
+    <!-- Кнопка "На главную" -->
+    <form action="{% url 'index' %}" method="get">
+        <button type="submit">На главную</button>
+    </form>
+
+    {% if user.role == 'teacher' %}
+        <!-- Кнопка создания нового курса -->
+        <br>
+        <form action="{% url 'course_create' %}" method="get">
+            <button type="submit">Создать курс</button>
+        </form>
+    {% endif %}
+
+    <!-- Список курсов -->
+    <ul>
+        {% for course in courses %}
+            <li>
+                <h2>{{ course.title }}</h2>
+                <p>{{ course.description }}</p>
+
+                {% if user == course.teacher %}
+                    <p><strong>Ваш курс (Преподаватель)</strong></p>
+                {% elif user in course.students.all %}
+                    <p><strong>Вы записаны на этот курс</strong></p>
+                {% else %}
+                    <p><em>Вы не связаны с этим курсом</em></p>
+                {% endif %}
+
+                <!-- Кнопка перехода к деталям курса -->
+                <form action="{% url 'course_detail' course.id %}" method="get">
+                    <button type="submit">Детали курса</button>
+                </form>
+
+                <!-- Кнопки редактирования/удаления для преподавателя -->
+                {% if user == course.teacher %}
+                    <br>
+                    <form action="{% url 'course_update' course.id %}" method="get">
+                        <button type="submit">Редактировать курс</button>
+                    </form>
+                    <br>
+
+                    <form action="{% url 'course_delete' course.id %}" method="get">
+                        <button type="submit">Удалить курс</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

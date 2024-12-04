@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мой аккаунт</title>
+</head>
+<body>
+    <h1>Добро пожаловать, {{ user.username }}</h1>
+    <p>Роль: {{ user.get_role_display }}</p>
+
+    {% if user.role == 'teacher' %}
+        <form action="{% url 'courses_list' %}" method="get">
+            <button type="submit">Перейти к созданию курса</button>
+        </form>
+    {% endif %}
+    <br>
+    <!-- Кнопка выхода через форму -->
+    <form action="{% url 'index' %}" method="get">
+        <button type="submit">На главную</button>
+    </form>
+    <br>
+
+
+
+    <!-- Кнопка выхода через форму -->
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Выйти из аккаунта</button>
+    </form>
+</body>
+</html>

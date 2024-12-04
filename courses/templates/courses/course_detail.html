@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали курса</title>
+</head>
+<body>
+    <h1>{{ course.title }}</h1>
+    <p>{{ course.description|linebreaks }}</p>
+
+    <h2>Преподаватель: {{ course.teacher.username }}</h2>
+
+    <!-- Управление курсом для студента -->
+    {% if user.role == 'student' %}
+        {% if user not in course.students.all %}
+            <form action="{% url 'enroll_in_course' course.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Записаться на курс</button>
+            </form>
+        {% else %}
+            <form action="{% url 'unenroll_from_course' course.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Отказаться от курса</button>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    <!-- Управление курсом для преподавателя -->
+    {% if user == course.teacher %}
+        <h2>Управление курсом</h2>
+        <form action="{% url 'course_update' course.id %}" method="get">
+            <button type="submit">Редактировать курс</button>
+        </form>
+        <br>
+        <form action="{% url 'course_delete' course.id %}" method="get">
+            <button type="submit">Удалить курс</button>
+        </form>
+        <br>
+        <form action="{% url 'lesson_create' course.id %}" method="get">
+            <button type="submit">Добавить урок</button>
+        </form>
+    {% endif %}
+
+    <!-- Список уроков -->
+    <h2>Уроки</h2>
+    <ul>
+        {% for lesson in course.lessons.all %}
+            <li>
+                <form action="{% url 'lesson_detail' course.id lesson.id %}" method="get" style="display: inline;">
+                    <button type="submit">{{ lesson.title }}</button>
+                </form>
+
+                {% if user.role == 'student' %}
+                    <!-- Отметка о завершении урока -->
+                    {% if lesson in completed_lessons %}
+                        <span style="color: green;">(Завершено)</span>
+                        <form action="{% url 'lesson_uncomplete' course.id lesson.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit">Отменить завершение</button>
+                        </form>
+                    {% else %}
+                        <form action="{% url 'lesson_complete' course.id lesson.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit">Завершить</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+
+
+                {% if user == course.teacher %}
+                    <form action="{% url 'lesson_update' course.id lesson.id %}" method="get" style="display: inline;">
+                        <button type="submit">Редактировать</button>
+                    </form>
+                    <form action="{% url 'lesson_delete' course.id lesson.id %}" method="get" style="display: inline;">
+                        <button type="submit">Удалить</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% empty %}
+            <p>Уроки еще не добавлены.</p>
+        {% endfor %}
+    </ul>
+
+    <form action="{% url 'profile' %}" method="get">
+        <button type="submit">Вернуться в личный кабинет</button>
+    </form>
+    <br>
+
+    <!-- Кнопка для возвращения на страницу списка курсов -->
+    <form action="{% url 'course_list' %}" method="get">
+        <button type="submit">Вернуться к списку курсов</button>
+    </form>
+</body>
+</html>

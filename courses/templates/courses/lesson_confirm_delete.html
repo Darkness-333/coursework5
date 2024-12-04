@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Удалить урок</title>
+</head>
+<body>
+    <h1>Удалить урок</h1>
+
+    <p>Вы уверены, что хотите удалить урок "{{ lesson.title }}"?</p>
+
+    <!-- Форма для подтверждения удаления -->
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+    </form>
+    <br>
+    <!-- Кнопка для отмены удаления и возврата к списку уроков -->
+    <form action="{% url 'lesson_list' course_id=course_id %}" method="get">
+        <button type="submit">Отменить</button>
+    </form>
+</body>
+</html>
